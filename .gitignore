@@ -1,8 +1,4 @@
 /.gradle/
 /.idea/
 /build/
-/build.gradle
-/geckodriver.exe
-/gradlew
-/gradlew.bat
-/settings.gradle
+
