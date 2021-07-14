@@ -4,15 +4,15 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import pages.HomePage;
+import pages.ResultsPage;
 
-import java.sql.SQLOutput;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,6 +21,8 @@ public class TradeMeTest {
 
 
     private WebDriver driver;
+    private HomePage homePage;
+    private ResultsPage resultsPage;
 
     @BeforeAll
     private static void setupClass() {
@@ -31,6 +33,7 @@ public class TradeMeTest {
     private void setupBrowser() {
         driver = new ChromeDriver();
         driver.get("https://www.tmsandbox.co.nz/");
+        homePage = new HomePage(driver);
     }
 
     @AfterEach
@@ -43,40 +46,29 @@ public class TradeMeTest {
 
     @Test
     public void checkGoldReturn() throws Exception{
-        WebElement queryBox = driver.findElement(By.cssSelector("input#searchString.default-input.input-main-search.text.ac_input.LoNotSensitive"));
-        queryBox.sendKeys("gold");
-        queryBox.sendKeys(Keys.RETURN);
+        homePage.searchForGold();
         Thread.sleep(5000);
     }
 
 
     @Test
     public void goldNumberListings() throws Exception{
-        WebElement queryBox = driver.findElement(By.cssSelector("input#searchString.default-input.input-main-search.text.ac_input.LoNotSensitive"));
-        queryBox.sendKeys("gold");
-        queryBox.sendKeys(Keys.RETURN);
-        Thread.sleep(5000);
-        WebElement numberOfResults = driver.findElement(By.cssSelector("span#totalCount"));
-        System.out.println("The number of results is: " + numberOfResults.getText());
+        resultsPage = homePage.searchForGold();
+        String numberOfResults = resultsPage.getTotalCount();
+        System.out.println("The number of results is: " + numberOfResults);
 
     }
 
     @Test
     public void goldCurrentPriceTopItem() throws Exception{
-        WebElement queryBox = driver.findElement(By.cssSelector("input#searchString.default-input.input-main-search.text.ac_input.LoNotSensitive"));
-        queryBox.sendKeys("gold");
-        queryBox.sendKeys(Keys.RETURN);
-        Thread.sleep(5000);
+        homePage.searchForGold();
         WebElement price = driver.findElement(By.cssSelector("#SuperGridGallery_BucketList_ClassifiedPrice_listingClassifiedPriceAmountPoa"));
         System.out.println("The current price of the top item is: " + price.getText());
     }
 
     @Test
     public void goldClickOnListViewButton() throws Exception{
-        WebElement queryBox = driver.findElement(By.cssSelector("input#searchString.default-input.input-main-search.text.ac_input.LoNotSensitive"));
-        queryBox.sendKeys("gold");
-        queryBox.sendKeys(Keys.RETURN);
-        Thread.sleep(5000);
+        homePage.searchForGold();
         WebElement clickListView = driver.findElement(By.cssSelector("#ListingViewBar_listViewTab_icon_a > img"));
         clickListView.click();
         Thread.sleep(5000);
@@ -84,10 +76,7 @@ public class TradeMeTest {
 
     @Test
     public void goldListTitlesOfTopTen() throws Exception{
-        WebElement queryBox = driver.findElement(By.cssSelector("input#searchString.default-input.input-main-search.text.ac_input.LoNotSensitive"));
-        queryBox.sendKeys("gold");
-        queryBox.sendKeys(Keys.RETURN);
-        Thread.sleep(5000);
+        homePage.searchForGold();
         WebElement clickListView = driver.findElement(By.cssSelector("#ListingViewBar_listViewTab_icon_a > img"));
         clickListView.click();
         Thread.sleep(5000);
@@ -98,22 +87,14 @@ public class TradeMeTest {
     }
 
     @Test
-    public void checkGoldClickSearchWithWait() throws Exception{
-        WebElement queryBox = driver.findElement(By.cssSelector("input#searchString.default-input.input-main-search.text.ac_input.LoNotSensitive"));
-        queryBox.sendKeys("gold");
-        WebElement clickBox = driver.findElement(By.cssSelector("button.btn.btn-trademe"));
-        clickBox.click();
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#top-of-page > div.site-footer")));
+    public void checkGoldWithWait() throws Exception{
+        homePage.searchForGold();
+
     }
 
     @Test
-    public void checkGoldSubmitFormLowestBuyNow() throws Exception{
-        WebElement queryBox = driver.findElement(By.cssSelector("input#searchString.default-input.input-main-search.text.ac_input.LoNotSensitive"));
-        queryBox.sendKeys("gold");
-        queryBox.submit();
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#top-of-page > div.site-footer")));
+    public void checkGoldLowestBuyNow() throws Exception{
+        homePage.searchForGold();
         Select select = new Select(driver.findElement(By.cssSelector("#listingTitleBarSelect")));
         select.selectByVisibleText("Lowest Buy Now");
         List<WebElement> prices = driver.findElements(By.cssSelector("#SuperGridGallery_BucketList_BidInfo_listingBidPrice"));
