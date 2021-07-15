@@ -19,14 +19,15 @@ public class ResultsPage {
 
 
     public ResultsPage(WebDriver driver) {
-        this.driver = driver;
+
         PageFactory.initElements(driver, this);
         WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(ExpectedConditions.visibilityOf(totalCount));
         wait.until(ExpectedConditions.visibilityOf(footer));
+        this.driver = driver;
     }
 
-    public String getTotalCount() {
-        return totalCount.getText();
+    public int getTotalCount() {
+        return Integer.parseInt(totalCount.getText());
     }
 }

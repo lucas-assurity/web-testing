@@ -5,7 +5,6 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
-import pages.ResultsPage;
 
 public class HomePage {
     private final WebDriver driver;
@@ -15,9 +14,9 @@ public class HomePage {
         PageFactory.initElements(driver, this);
     }
 
-    public ResultsPage searchForGold() {
+    public ResultsPage searchFor(String searchString) {
         WebElement queryBox = driver.findElement(By.cssSelector("input#searchString.default-input.input-main-search.text.ac_input.LoNotSensitive"));
-        queryBox.sendKeys("gold");
+        queryBox.sendKeys(searchString);
         queryBox.sendKeys(Keys.RETURN);
         return new ResultsPage(driver);
     }

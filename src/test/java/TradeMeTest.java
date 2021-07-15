@@ -7,9 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.HomePage;
 import pages.ResultsPage;
 
@@ -46,29 +44,29 @@ public class TradeMeTest {
 
     @Test
     public void checkGoldReturn() throws Exception{
-        homePage.searchForGold();
+        homePage.searchFor("gold");
         Thread.sleep(5000);
     }
 
 
     @Test
     public void goldNumberListings() throws Exception{
-        resultsPage = homePage.searchForGold();
-        String numberOfResults = resultsPage.getTotalCount();
+        resultsPage = homePage.searchFor("gold");
+        Integer numberOfResults = resultsPage.getTotalCount();
         System.out.println("The number of results is: " + numberOfResults);
 
     }
 
     @Test
     public void goldCurrentPriceTopItem() throws Exception{
-        homePage.searchForGold();
+        homePage.searchFor("gold");
         WebElement price = driver.findElement(By.cssSelector("#SuperGridGallery_BucketList_ClassifiedPrice_listingClassifiedPriceAmountPoa"));
         System.out.println("The current price of the top item is: " + price.getText());
     }
 
     @Test
     public void goldClickOnListViewButton() throws Exception{
-        homePage.searchForGold();
+        homePage.searchFor("gold");
         WebElement clickListView = driver.findElement(By.cssSelector("#ListingViewBar_listViewTab_icon_a > img"));
         clickListView.click();
         Thread.sleep(5000);
@@ -76,7 +74,7 @@ public class TradeMeTest {
 
     @Test
     public void goldListTitlesOfTopTen() throws Exception{
-        homePage.searchForGold();
+        homePage.searchFor("gold");
         WebElement clickListView = driver.findElement(By.cssSelector("#ListingViewBar_listViewTab_icon_a > img"));
         clickListView.click();
         Thread.sleep(5000);
@@ -88,13 +86,13 @@ public class TradeMeTest {
 
     @Test
     public void checkGoldWithWait() throws Exception{
-        homePage.searchForGold();
+        homePage.searchFor("gold");
 
     }
 
     @Test
     public void checkGoldLowestBuyNow() throws Exception{
-        homePage.searchForGold();
+        homePage.searchFor("gold");
         Select select = new Select(driver.findElement(By.cssSelector("#listingTitleBarSelect")));
         select.selectByVisibleText("Lowest Buy Now");
         List<WebElement> prices = driver.findElements(By.cssSelector("#SuperGridGallery_BucketList_BidInfo_listingBidPrice"));
